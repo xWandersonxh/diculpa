@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Você me perdoa?</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      max-width: 400px;
+      margin: 100px auto;
+    }
+
+    h1 {
+      color: #d81b60;
+      margin-bottom: 30px;
+    }
+
+    .botoes, .botoes-certeza, .botoes-serio {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-sim {
+      background-color: #81c784;
+      color: white;
+    }
+
+    .btn-sim:hover {
+      background-color: #66bb6a;
+    }
+
+    .btn-nao {
+      background-color: #e57373;
+      color: white;
+      font-size: 0.9em;
+      padding: 8px 16px;
+    }
+
+    .btn-nao:hover {
+      background-color: #ef5350;
+    }
+
+    .btn-final-nao {
+      background-color: #b71c1c;
+      color: white;
+      font-size: 0.6em;
+      padding: 4px 10px;
+    }
+
+    .btn-final-nao:hover {
+      background-color: #880e4f;
+    }
+
+    .btn-mudou {
+      background-color: #64b5f6;
+      color: white;
+    }
+
+    .btn-mudou:hover {
+      background-color: #42a5f5;
+    }
+
+    .btn-serio-nao {
+      background-color: #f06292;
+      color: white;
+    }
+
+    .btn-serio-nao:hover {
+      background-color: #ec407a;
+    }
+
+    .resposta {
+      margin-top: 30px;
+      font-size: 1.2em;
+      color: #d81b60;
+      font-weight: bold;
+      display: none;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #btn-serio-sim {
+      background-color: #81c784;
+      color: white;
+      position: absolute;
+    }
+
+    /* ❤️ Corações no fundo */
+    .heart {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      background-color: pink;
+      clip-path: polygon(
+        50% 0%, 
+        61% 15%, 
+        98% 15%, 
+        68% 40%, 
+        79% 75%, 
+        50% 55%, 
+        21% 75%, 
+        32% 40%, 
+        2% 15%, 
+        39% 15%
+      );
+      animation: float 10s linear infinite;
+      opacity: 0.7;
+      z-index: 0;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) scale(1);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ❤️ Corações gerados via JS -->
+  <script>
+    for (let i = 0; i < 20; i++) {
+      let heart = document.createElement("div");
+      heart.className = "heart";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDelay = Math.random() * 10 + "s";
+      heart.style.backgroundColor = ["#f8bbd0", "#f48fb1", "#ff80ab", "#ffb6c1"][i % 4];
+      document.body.appendChild(heart);
+    }
+  </script>
+
+  <div class="container">
+    <h1 id="pergunta">Você me perdoa?</h1>
+
+    <!-- Primeira pergunta -->
+    <div class="botoes" id="botoes-iniciais">
+      <button class="btn-sim" onclick="responder(true)">Sim</button>
+      <button class="btn-nao" onclick="confirmarNao()">Não</button>
+    </div>
+
+    <!-- Segunda etapa: "Certeza?" -->
+    <div class="botoes-certeza hidden" id="botoes-certeza">
+      <button class="btn-final-nao" onclick="mostrarSerio()">Sim...</button>
+      <button class="btn-mudou" onclick="responder(true)">Tá bom, vai...</button>
+    </div>
+
+    <!-- Terceira etapa: "Sério?" -->
+    <div class="botoes-serio hidden" id="botoes-serio">
+      <button id="btn-serio-sim" onmouseover="fugir(this)">Sim</button>
+      <button class="btn-serio-nao" onclick="responder(true)">Não</button>
+    </div>
+
+    <div class="resposta" id="resposta"></div>
+  </div>
+
+  <script>
+    let fugas = 0;
+
+    function responder() {
+      const pergunta = document.getElementById("pergunta");
+      const msg = document.getElementById("resposta");
+      esconderTudo();
+      pergunta.innerText = "Resposta:";
+      msg.innerText = "Ebaaa! Muito obrigado por me perdoar 💖 Prometo que vou melhorar a cada dia!";
+      msg.style.display = "block";
+    }
+
+    function confirmarNao() {
+      document.getElementById("pergunta").innerText = "Certeza?";
+      document.getElementById("botoes-iniciais").classList.add("hidden");
+      document.getElementById("botoes-certeza").classList.remove("hidden");
+    }
+
+    function mostrarSerio() {
+      document.getElementById("pergunta").innerText = "Sério?";
+      document.getElementById("botoes-certeza").classList.add("hidden");
+      document.getElementById("botoes-serio").classList.remove("hidden");
+
+      const btn = document.getElementById("btn-serio-sim");
+      btn.style.left = "50%";
+      btn.style.top = "50%";
+      btn.style.transform = "translate(-50%, -50%)";
+      btn.style.opacity = "1";
+      btn.style.transition = "all 0.5s ease";
+    }
+
+    function fugir(btn) {
+      if (fugas < 3) {
+        const container = document.querySelector(".container");
+        const maxX = container.clientWidth - btn.offsetWidth;
+        const maxY = container.clientHeight - btn.offsetHeight;
+        const randomX = Math.random() * maxX;
+        const randomY = Math.random() * maxY;
+
+        btn.style.left = `${randomX}px`;
+        btn.style.top = `${randomY}px`;
+        btn.style.transform = "translate(0, 0)";
+        fugas++;
+      } else {
+        // Evaporar devagar
+        btn.style.transition = "opacity 1.5s ease-out";
+        btn.style.opacity = "0";
+        btn.disabled = true;
+      }
+    }
+
+    function esconderTudo() {
+      document.getElementById("botoes-iniciais").classList.add("hidden");
+      document.getElementById("botoes-certeza").classList.add("hidden");
+      document.getElementById("botoes-serio").classList.add("hidden");
+    }
+  </script>
+</body>
+</html>
