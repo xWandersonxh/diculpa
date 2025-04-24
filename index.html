@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Você me perdoa?</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ❤️ Corações gerados via JS -->
+  <script>
+    for (let i = 0; i < 20; i++) {
+      let heart = document.createElement("div");
+      heart.className = "heart";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDelay = Math.random() * 10 + "s";
+      heart.style.backgroundColor = ["#f8bbd0", "#f48fb1", "#ff80ab", "#ffb6c1"][i % 4];
+      document.body.appendChild(heart);
+    }
+  </script>
+
+  <div class="container">
+    <h1 id="pergunta">Você me perdoa?</h1>
+
+    <div class="botoes" id="botoes-iniciais">
+      <button class="btn-sim" onclick="responder(true)">Sim</button>
+      <button class="btn-nao" onclick="confirmarNao()">Não</button>
+    </div>
+
+    <div class="botoes-certeza hidden" id="botoes-certeza">
+      <button class="btn-final-nao" onclick="mostrarSerio()">Sim...</button>
+      <button class="btn-mudou" onclick="responder(true)">Tá bom, vai...</button>
+    </div>
+
+    <div class="botoes-serio hidden" id="botoes-serio">
+      <button id="btn-serio-sim" onmouseover="fugir(this)">Sim</button>
+      <button class="btn-serio-nao" onclick="responder(true)">Não</button>
+    </div>
+
+    <div class="resposta" id="resposta"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
